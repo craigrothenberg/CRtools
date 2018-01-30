@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1517356362877.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2873177741",
+    "id" : "A8CD0A6C",
+    "lastKnownWriteTime" : 1517356395,
+    "last_content_update" : 1517356395312,
+    "path" : "~/toolset/R/toolset.R",
+    "project_path" : "R/toolset.R",
+    "properties" : {
+        "cursorPosition" : "20,0",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
