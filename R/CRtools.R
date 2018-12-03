@@ -18,3 +18,11 @@ round2 <- function( vec , digits=0 ){
 pct <- function(numbertobeconvertedtocharacter, numberofdecimals = 0){
   return(paste0(round2(numbertobeconvertedtocharacter*100,numberofdecimals),"%"))
 }
+
+simpleCap <- function(x) {
+  s <- strsplit(x, " ")[[1]]
+  paste(toupper(substring(s, 1,1)), substring(s, 2),
+        sep="", collapse=" ")
+}
+
+df1 <- data.frame(x=rep(1:5,2),y=c(1,2,3,NA,5,6,7,8,9,10),z = c(1,1,1,2,2,2,1,2,1,2))
