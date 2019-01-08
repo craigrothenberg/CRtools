@@ -38,4 +38,6 @@ ProjectBuilder <- function(){
   file.create("code\\_analysis.R")
   file.create("code\\_documentation.R")
   file.create("code\\_functions.R")
+
+  file.edit("code\\_import.R")
 }
