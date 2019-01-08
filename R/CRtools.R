@@ -25,4 +25,17 @@ simpleCap <- function(x) {
         sep="", collapse=" ")
 }
 
-df1 <- data.frame(x=rep(1:5,2),y=c(1,2,3,NA,5,6,7,8,9,10),z = c(1,1,1,2,2,2,1,2,1,2))
+ProjectBuilder <- function(){
+  dir.create("data")
+  dir.create("code")
+  dir.create("figures")
+  dir.create("output")
+
+  file.create("code\\_import.R")
+  fileConn.import <- file("code\\_import.R")
+  writeLines(c("library(tidyverse)","library(CRtools)"),fileConn.import)
+
+  file.create("code\\_analysis.R")
+  file.create("code\\_documentation.R")
+  file.create("code\\_functions.R")
+}
