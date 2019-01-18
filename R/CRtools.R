@@ -35,8 +35,11 @@ ProjectBuilder <- function(){
   fileConn.import <- file("code\\_import.R")
   writeLines(c("library(tidyverse)","library(CRtools)"),fileConn.import)
 
-  file.create("code\\_analysis.R")
   file.create("code\\_documentation.R")
+  fileConn.documentation <- file("code\\_documentation.R")
+  writeLines(c("dat.doc <- as.list(NA)","dat.doc[['Notes']] <- 'Enter Notes Here'",fileConn.documentation)
+
+  file.create("code\\_analysis.R")
   file.create("code\\_functions.R")
 
   file.edit("code\\_import.R")
