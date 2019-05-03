@@ -54,7 +54,7 @@ ProjectBuilder <- function(){
 
 # summarise mathematical models made using things like glm() or glmer() for easier understanding
   # requires tidyverse (dplyr and tibble specifically)
-modelSummary <- function(myModel){
+CRmodelSummary <- function(myModel){
   myModelSummary <- myModel %>%
     summary %>%
     coefficients %>%
@@ -63,5 +63,18 @@ modelSummary <- function(myModel){
     rename("p value" = `Pr(>|z|)`,
            Coefficient = Estimate) %>%
     mutate_at(vars(Coefficient,`Std. Error`,`z value`,`p value`),funs(round(.,3)))
-  return(myModelSummary)
+
+  myModelOddsRatios <- exp(myModel %>%
+                             summary %>%
+                             coefficients %>%
+                             .[,1]) %>%
+    as.data.frame %>%
+    rownames_to_column() %>%
+    rename(oddsRatio = ".") %>%
+    mutate(oddsRatio = round2(oddsRatio,3))
+
+  myModelResults <- left_join(myModelSummary,myModelOddsRatios,by = "rowname") %>%
+    rename(variableName = "rowname")
+  return(myModelResults)
 }
+
