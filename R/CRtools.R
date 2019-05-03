@@ -1,3 +1,4 @@
+# same as round() function, but rounds .5 up to higher number, rather than rounding even
 round2 <- function( vec , digits=0 ){
   vec0 <- vec
   eps <- 10^(-10)
@@ -19,12 +20,14 @@ pct <- function(numbertobeconvertedtocharacter, numberofdecimals = 0){
   return(paste0(round2(numbertobeconvertedtocharacter*100,numberofdecimals),"%"))
 }
 
+# capitalizes first letters of strings
 simpleCap <- function(x) {
   s <- strsplit(x, " ")[[1]]
   paste(toupper(substring(s, 1,1)), substring(s, 2),
         sep="", collapse=" ")
 }
 
+# creates subfolder directories and basic files for project
 ProjectBuilder <- function(){
   dir.create("data")
   dir.create("code")
@@ -38,7 +41,7 @@ ProjectBuilder <- function(){
   file.create("code\\_libs.R")
   fileConn.import <- file("code\\_libs.R")
   writeLines(c("library(tidyverse)","library(CRtools)"),fileConn.import)
-  
+
   file.create("code\\_documentation.R")
   fileConn.documentation <- file("code\\_documentation.R")
   writeLines(c("dat.doc <- as.list(NA)","dat.doc[['Notes']] <- 'Enter Notes Here'"),fileConn.documentation)
@@ -47,4 +50,18 @@ ProjectBuilder <- function(){
   file.create("code\\_functions.R")
 
   file.edit("code\\_import.R")
+}
+
+# summarise mathematical models made using things like glm() or glmer() for easier understanding
+  # requires tidyverse (dplyr and tibble specifically)
+modelSummary <- function(myModel){
+  myModelSummary <- myModel %>%
+    summary %>%
+    coefficients %>%
+    as.data.frame %>%
+    rownames_to_column() %>%
+    rename("p value" = `Pr(>|z|)`,
+           Coefficient = Estimate) %>%
+    mutate_at(vars(Coefficient,`Std. Error`,`z value`,`p value`),funs(round(.,3)))
+  return(myModelSummary)
 }
