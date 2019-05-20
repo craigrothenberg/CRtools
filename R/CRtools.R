@@ -70,10 +70,18 @@ CRmodelSummary <- function(myModel){
                              .[,1]) %>%
     as.data.frame %>%
     rownames_to_column() %>%
-    rename(oddsRatio = ".") %>%
-    mutate(oddsRatio = round2(oddsRatio,3))
+    rename("Odds Ratio" = ".") %>%
+    mutate("Odds Ratio" = round2(`Odds Ratio`,3))
+
+  myModelOddsRatioConfidenceInterval <- exp(confint(myModel)) %>%
+    as.data.frame %>%
+    rownames_to_column() %>%
+    rename("Lower OR Confidence Limit" = "2.5 %") %>%
+    rename("Upper OR Confidence Limit" = "97.5 %") %>%
+    mutate_at(vars(contains("Confidence Limit")),funs(round2(.,3)))
 
   myModelResults <- left_join(myModelSummary,myModelOddsRatios,by = "rowname") %>%
+    left_join(myModelOddsRatioConfidenceInterval, by = "rowname") %>%
     rename(variableName = "rowname")
   return(myModelResults)
 }
