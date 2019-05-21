@@ -50,6 +50,7 @@ ProjectBuilder <- function(){
   file.create("code\\_functions.R")
 
   file.edit("code\\_import.R")
+  file.edit("code\\_libs.R")
 }
 
 # summarise mathematical models made using things like glm() or glmer() for easier understanding
