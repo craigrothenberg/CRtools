@@ -33,6 +33,7 @@ ProjectBuilder <- function(){
   dir.create("code")
   dir.create("figures")
   dir.create("output")
+  dir.create("docs")
 
   file.create("code\\_import.R")
   fileConn.import <- file("code\\_import.R")
@@ -48,7 +49,6 @@ ProjectBuilder <- function(){
 
   file.create("code\\_analysis.R")
   file.create("code\\_functions.R")
-  file.create("code\\_docs.R")
 
   file.edit("code\\_import.R")
   file.edit("code\\_libs.R")
