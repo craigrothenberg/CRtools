@@ -37,11 +37,11 @@ ProjectBuilder <- function(){
 
   file.create("code\\_import.R")
   fileConn.import <- file("code\\_import.R")
-  writeLines(c("library(tidyverse)","library(CRtools)","library(cowplot)","library(ggthemes)","library(readxl)"),fileConn.import)
+  writeLines(c("library(tidyverse)","library(CRtools)","library(cowplot)","library(ggthemes)","library(readxl)","library(scales)"),fileConn.import)
 
   file.create("code\\_libs.R")
   fileConn.import <- file("code\\_libs.R")
-  writeLines(c("library(tidyverse)","library(CRtools)","library(cowplot)","library(ggthemes)","library(readxl)"),fileConn.import)
+  writeLines(c("library(tidyverse)","library(CRtools)","library(cowplot)","library(ggthemes)","library(readxl)","library(scales)"),fileConn.import)
 
   file.create("code\\_documentation.R")
   fileConn.documentation <- file("code\\_documentation.R")
