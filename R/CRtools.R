@@ -88,3 +88,17 @@ CRmodelSummary <- function(myModel){
   return(myModelResults)
 }
 
+# 2020-02-21 epic color palette
+
+epic_color_palette <- c(
+  rgb(0,133,242,maxColorValue=255),
+  rgb(221,41,157,maxColorValue=255),
+  rgb(105,195,0,maxColorValue=255),
+  rgb(180,41,204,maxColorValue=255),
+  rgb(0,191,212,maxColorValue=255),
+  rgb(255,146,0,maxColorValue=255),
+  rgb(106,76,224,maxColorValue=255),
+  rgb(24,194,149,maxColorValue=255),
+  rgb(217,78,111,maxColorValue=255),
+  rgb(36,164,238,maxColorValue=255)
+)
