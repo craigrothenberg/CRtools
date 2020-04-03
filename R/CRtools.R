@@ -56,7 +56,7 @@ ProjectBuilder <- function(){
 
 # summarise mathematical models made using things like glm() or glmer() for easier understanding
   # requires tidyverse (dplyr and tibble specifically)
-CRmodelSummary <- function(myModel){
+CRmodelSummary <- function(myModel,rounding = 4){
   myModelSummary <- myModel %>%
     summary %>%
     coefficients %>%
@@ -64,7 +64,7 @@ CRmodelSummary <- function(myModel){
     rownames_to_column() %>%
     rename("p value" = `Pr(>|z|)`,
            Coefficient = Estimate) %>%
-    mutate_at(vars(Coefficient,`Std. Error`,`z value`,`p value`),funs(round(.,3)))
+    mutate_at(vars(Coefficient,`Std. Error`,`z value`),list(~round(.,rounding)))
 
   myModelOddsRatios <- exp(myModel %>%
                              summary %>%
@@ -73,18 +73,21 @@ CRmodelSummary <- function(myModel){
     as.data.frame %>%
     rownames_to_column() %>%
     rename("Odds Ratio" = ".") %>%
-    mutate("Odds Ratio" = round2(`Odds Ratio`,3))
+    mutate("Odds Ratio" = round2(`Odds Ratio`,rounding))
 
   myModelOddsRatioConfidenceInterval <- exp(confint(myModel)) %>%
     as.data.frame %>%
     rownames_to_column() %>%
     rename("Lower OR Confidence Limit" = "2.5 %") %>%
     rename("Upper OR Confidence Limit" = "97.5 %") %>%
-    mutate_at(vars(contains("Confidence Limit")),funs(round2(.,3)))
+    mutate_at(vars(contains("Confidence Limit")),list(~round2(.,rounding)))
 
   myModelResults <- left_join(myModelSummary,myModelOddsRatios,by = "rowname") %>%
     left_join(myModelOddsRatioConfidenceInterval, by = "rowname") %>%
-    rename(variableName = "rowname")
+    rename(variableName = "rowname") %>%
+    rowwise() %>%
+    mutate(`p value` = ifelse(`p value`<0.0001,"<0.0001",as.character(round2(`p value`,rounding)))) %>%
+    ungroup()
   return(myModelResults)
 }
 
@@ -102,3 +105,47 @@ epic_color_palette <- c(
   rgb(217,78,111,maxColorValue=255),
   rgb(36,164,238,maxColorValue=255)
 )
+
+
+# 2020-04-03 check each variable in dataframe for missings, zeroes, negative numbers, outliers
+CRdataCheck <- function(myData){
+
+  CRoutput <- vector('list')
+
+  # meanOfEachNumericVariable <- myData %>% summarise_all(~mean(.,na.rm=T))
+  # sdOfEachNumericVariable <- myData %>% summarise_all(~sd(.,na.rm=T))
+
+  missingness <- myData %>% summarise_all(list(~length(.[is.na(.)]))) %>% gather() %>% rename(missingness = 'value')
+  negatives <- myData %>% summarise_all(list(~length(.[is.numeric(.) & !is.na(.) & .<0]))) %>% gather() %>% rename(negatives = 'value')
+  outliers <- myData %>% summarise_all(list(~length(.[
+    is.numeric(.) &
+      !is.na(.) &
+      abs(.) > mean(.,na.rm=T) + {sd(.,na.rm=T)*2}
+  ]))) %>%
+    gather() %>% rename(outliers = 'value')
+
+  dataCheck <- full_join(
+    missingness,
+    negatives,
+    by = 'key'
+  ) %>%
+    full_join(
+      outliers,
+      by = 'key'
+    ) %>%
+    rowwise() %>%
+    filter_at(vars(-key),any_vars(!. %in% 0))
+
+  CRoutput[['Diagnostics']] <- dataCheck
+  CRoutput[['Outliers']] <- vector('list')
+
+  for(i in dataCheck$key){
+    CRoutput$Outliers[[i]] <-
+      myData %>%
+        select(.data[[i]]) %>%
+        mutate(rowNumber=1:n()) %>%
+        filter(abs(.data[[i]])>mean(.data[[i]] + {sd(.data[[i]],na.rm=T)*2}))
+      }
+  return(CRoutput)
+}
+# z <- CRdataCheck(mtcars)
