@@ -28,7 +28,7 @@ simpleCap <- function(x) {
 }
 
 # creates subfolder directories and basic files for project
-ProjectBuilder <- function(){
+CRProjectBuilder <- function(){
   dir.create("data")
   dir.create("code")
   dir.create("figures")
@@ -106,46 +106,3 @@ epic_color_palette <- c(
   rgb(36,164,238,maxColorValue=255)
 )
 
-
-# 2020-04-03 check each variable in dataframe for missings, zeroes, negative numbers, outliers
-CRdataCheck <- function(myData){
-
-  CRoutput <- vector('list')
-
-  # meanOfEachNumericVariable <- myData %>% summarise_all(~mean(.,na.rm=T))
-  # sdOfEachNumericVariable <- myData %>% summarise_all(~sd(.,na.rm=T))
-
-  missingness <- myData %>% summarise_all(list(~length(.[is.na(.)]))) %>% gather() %>% rename(missingness = 'value')
-  negatives <- myData %>% summarise_all(list(~length(.[is.numeric(.) & !is.na(.) & .<0]))) %>% gather() %>% rename(negatives = 'value')
-  outliers <- myData %>% summarise_all(list(~length(.[
-    is.numeric(.) &
-      !is.na(.) &
-      abs(.) > mean(.,na.rm=T) + {sd(.,na.rm=T)*2}
-  ]))) %>%
-    gather() %>% rename(outliers = 'value')
-
-  dataCheck <- full_join(
-    missingness,
-    negatives,
-    by = 'key'
-  ) %>%
-    full_join(
-      outliers,
-      by = 'key'
-    ) %>%
-    rowwise() %>%
-    filter_at(vars(-key),any_vars(!. %in% 0))
-
-  CRoutput[['Diagnostics']] <- dataCheck
-  CRoutput[['Outliers']] <- vector('list')
-
-  for(i in dataCheck$key){
-    CRoutput$Outliers[[i]] <-
-      myData %>%
-        select(.data[[i]]) %>%
-        mutate(rowNumber=1:n()) %>%
-        filter(abs(.data[[i]])>mean(.data[[i]] + {sd(.data[[i]],na.rm=T)*2}))
-      }
-  return(CRoutput)
-}
-# z <- CRdataCheck(mtcars)
