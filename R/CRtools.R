@@ -37,7 +37,7 @@ CRProjectBuilder <- function(){
 
   file.create("code\\_import.R")
   fileConn.import <- file("code\\_import.R")
-  writeLines(c("library(tidyverse)","library(CRtools)","library(cowplot)","library(ggthemes)","library(readxl)","library(scales)"),fileConn.import)
+  writeLines(c("library(tidyverse)","library(CRtools)","library(cowplot)","library(ggthemes)","library(readxl)","library(scales)","library(skimr)"),fileConn.import)
 
   file.create("code\\_libs.R")
   fileConn.import <- file("code\\_libs.R")
