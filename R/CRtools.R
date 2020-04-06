@@ -28,7 +28,7 @@ simpleCap <- function(x) {
 }
 
 # creates subfolder directories and basic files for project
-CRProjectBuilder <- function(){
+CRprojectBuilder <- function(){
   dir.create("data")
   dir.create("code")
   dir.create("figures")
