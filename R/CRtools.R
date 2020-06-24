@@ -61,6 +61,7 @@ CRprojectBuilder <- function(){
 
   file.create("code\\_analysis.R")
   file.create("code\\_functions.R")
+  file.create("code\\_diagnostics.R")
 
   file.edit("code\\_import.R")
   file.edit("code\\_libs.R")
