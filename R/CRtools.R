@@ -77,7 +77,7 @@ CRmodelSummary <- function(myModel,rounding = 4){
     rownames_to_column() %>%
     rename("p value" = `Pr(>|z|)`,
            Coefficient = Estimate) %>%
-    mutate_at(vars(Coefficient,`Std. Error`,`z value`),list(~round(.,rounding)))
+    mutate_at(vars(Coefficient,`Std. Error`,`z value`),~round(.,rounding))
 
   myModelOddsRatios <- exp(myModel %>%
                              summary %>%
@@ -93,7 +93,7 @@ CRmodelSummary <- function(myModel,rounding = 4){
     rownames_to_column() %>%
     rename("Lower OR Confidence Limit" = "2.5 %") %>%
     rename("Upper OR Confidence Limit" = "97.5 %") %>%
-    mutate_at(vars(contains("Confidence Limit")),list(~round2(.,rounding)))
+    mutate_at(vars(contains("Confidence Limit")),~round2(.,rounding))
 
   myModelResults <- left_join(myModelSummary,myModelOddsRatios,by = "rowname") %>%
     left_join(myModelOddsRatioConfidenceInterval, by = "rowname") %>%
