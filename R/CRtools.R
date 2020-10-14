@@ -49,11 +49,11 @@ CRprojectBuilder <- function(){
 
   file.create("code\\_import.R")
   fileConn.import <- file("code\\_import.R")
-  writeLines(c("library(tidyverse)","library(CRtools)","library(cowplot)","library(ggthemes)","library(readxl)","library(scales)","library(skimr)","library(car)","library(ggfortify)"),fileConn.import)
+  writeLines(c("library(tidyverse)","library(CRtools)","library(cowplot)","library(ggthemes)","library(readxl)","library(scales)","library(skimr)","library(car)","library(ggfortify)","library(lubridate)",fileConn.import)
 
   file.create("code\\_libs.R")
   fileConn.import <- file("code\\_libs.R")
-  writeLines(c("library(tidyverse)","library(CRtools)","library(cowplot)","library(ggthemes)","library(readxl)","library(scales)","library(skimr)","library(car)","library(ggfortify)"),fileConn.import)
+  writeLines(c("library(tidyverse)","library(CRtools)","library(cowplot)","library(ggthemes)","library(readxl)","library(scales)","library(skimr)","library(car)","library(ggfortify)","library(lubridate)"),fileConn.import)
 
   file.create("code\\_documentation.R")
   fileConn.documentation <- file("code\\_documentation.R")
