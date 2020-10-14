@@ -69,7 +69,7 @@ CRprojectBuilder <- function(){
 
 # summarise mathematical models made using things like glm() or glmer() for easier understanding
   # requires tidyverse (dplyr and tibble specifically)
-CRmodelSummary <- function(myModel,rounding = 4){
+CRmodelSummary <- function(myModel,rounding = 4,simpleResultOutput = T){
   myModelSummary <- myModel %>%
     summary %>%
     coefficients %>%
@@ -101,6 +101,12 @@ CRmodelSummary <- function(myModel,rounding = 4){
     rowwise() %>%
     mutate(`p value` = ifelse(`p value`<0.0001,"<0.0001",as.character(round2(`p value`,rounding)))) %>%
     ungroup()
+
+  if(simpleResultOutput %in% T){
+    myModelResults <- myModelResults %>%
+      select(variableName,`p value`,`Odds Ratio`,`Lower OR Confidence Limit`,`Upper OR Confidence Limit`)
+  }
+
   return(myModelResults)
 }
 
