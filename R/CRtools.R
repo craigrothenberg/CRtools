@@ -99,6 +99,7 @@ CRmodelSummary <- function(myModel,rounding = 4,simpleResultOutput = T){
     left_join(myModelOddsRatioConfidenceInterval, by = "rowname") %>%
     rename(variableName = "rowname") %>%
     rowwise() %>%
+    mutate(`p value.numeric` = `p value`) %>%
     mutate(`p value` = ifelse(`p value`<0.0001,"<0.0001",as.character(round2(`p value`,rounding)))) %>%
     ungroup()
 
