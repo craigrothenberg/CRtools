@@ -57,7 +57,7 @@ CRprojectBuilder <- function(){
 
   file.create("code\\_documentation.R")
   fileConn.documentation <- file("code\\_documentation.R")
-  writeLines(c("dat.doc <- vector('list')","dat.doc[['Notes']] <- 'Enter Notes Here'"),fileConn.documentation)
+  writeLines(c("dat.doc <- vector('list')","dat.doc[['Notes']] <- 'Enter Notes Here'",fileConn.documentation))
 
   file.create("code\\_analysis.R")
   file.create("code\\_functions.R")
