@@ -40,6 +40,7 @@ simpleCap <- function(x) {
 }
 
 # creates subfolder directories and basic files for project
+  # works in conjunction with custom shortcuts and custom pipe (not included in this R code)
 CRprojectBuilder <- function(){
   dir.create("data")
   dir.create("code")
