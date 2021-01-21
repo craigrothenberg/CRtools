@@ -69,47 +69,47 @@ CRprojectBuilder <- function(){
 
 # summarise mathematical models made using things like glm() or glmer() for easier understanding
   # requires tidyverse (dplyr and tibble specifically)
-CRmodelSummary <- function(myModel,rounding = 4,simpleResultOutput = T){
-  myModelSummary <- myModel %>%
-    summary %>%
-    coefficients %>%
-    as.data.frame %>%
-    rownames_to_column() %>%
-    rename("p value" = `Pr(>|z|)`,
-           Coefficient = Estimate) %>%
-    mutate_at(vars(Coefficient,`Std. Error`,`z value`),~round(.,rounding))
-
-  myModelOddsRatios <- exp(myModel %>%
-                             summary %>%
-                             coefficients %>%
-                             .[,1]) %>%
-    as.data.frame %>%
-    rownames_to_column() %>%
-    rename("Odds Ratio" = ".") %>%
-    mutate("Odds Ratio" = round2(`Odds Ratio`,rounding))
-
-  myModelOddsRatioConfidenceInterval <- exp(confint(myModel)) %>%
-    as.data.frame %>%
-    rownames_to_column() %>%
-    rename("Lower OR Confidence Limit" = "2.5 %") %>%
-    rename("Upper OR Confidence Limit" = "97.5 %") %>%
-    mutate_at(vars(contains("Confidence Limit")),~round2(.,rounding))
-
-  myModelResults <- left_join(myModelSummary,myModelOddsRatios,by = "rowname") %>%
-    left_join(myModelOddsRatioConfidenceInterval, by = "rowname") %>%
-    rename(variableName = "rowname") %>%
-    rowwise() %>%
-    mutate(`p value.numeric` = `p value`) %>%
-    mutate(`p value` = ifelse(`p value`<0.0001,"<0.0001",as.character(round2(`p value`,rounding)))) %>%
-    ungroup()
-
-  if(simpleResultOutput %in% T){
-    myModelResults <- myModelResults %>%
-      select(variableName,`p value`,`Odds Ratio`,`Lower OR Confidence Limit`,`Upper OR Confidence Limit`)
-  }
-
-  return(myModelResults)
-}
+# CRmodelSummary.logistic <- function(myModel,rounding = 4,simpleResultOutput = T){
+#   myModelSummary <- myModel %>%
+#     summary %>%
+#     coefficients %>%
+#     as.data.frame %>%
+#     rownames_to_column() %>%
+#     rename("p value" = `Pr(>|z|)`,
+#            Coefficient = Estimate) %>%
+#     mutate_at(vars(Coefficient,`Std. Error`,`z value`),~round(.,rounding))
+#
+#   myModelOddsRatios <- exp(myModel %>%
+#                              summary %>%
+#                              coefficients %>%
+#                              .[,1]) %>%
+#     as.data.frame %>%
+#     rownames_to_column() %>%
+#     rename("Odds Ratio" = ".") %>%
+#     mutate("Odds Ratio" = round2(`Odds Ratio`,rounding))
+#
+#   myModelOddsRatioConfidenceInterval <- exp(confint(myModel)) %>%
+#     as.data.frame %>%
+#     rownames_to_column() %>%
+#     rename("Lower OR Confidence Limit" = "2.5 %") %>%
+#     rename("Upper OR Confidence Limit" = "97.5 %") %>%
+#     mutate_at(vars(contains("Confidence Limit")),~round2(.,rounding))
+#
+#   myModelResults <- left_join(myModelSummary,myModelOddsRatios,by = "rowname") %>%
+#     left_join(myModelOddsRatioConfidenceInterval, by = "rowname") %>%
+#     rename(variableName = "rowname") %>%
+#     rowwise() %>%
+#     mutate(`p value.numeric` = `p value`) %>%
+#     mutate(`p value` = ifelse(`p value`<0.0001,"<0.0001",as.character(round2(`p value`,rounding)))) %>%
+#     ungroup()
+#
+#   if(simpleResultOutput %in% T){
+#     myModelResults <- myModelResults %>%
+#       select(variableName,`p value`,`Odds Ratio`,`Lower OR Confidence Limit`,`Upper OR Confidence Limit`)
+#   }
+#
+#   return(myModelResults)
+# }
 
 # 2020-02-21 epic color palette
 
