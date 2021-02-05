@@ -50,12 +50,12 @@ CRprojectBuilder <- function(){
 
   file.create("code\\_import.R")
   fileConn.import <- file("code\\_import.R")
-  writeLines(c("library(tidyverse)","library(CRtools)","library(cowplot)","library(ggthemes)","library(readxl)","library(scales)","library(skimr)","library(car)","library(ggfortify)","library(lubridate),library(data.table)"),fileConn.import)
+  writeLines(c("library(tidyverse)","library(CRtools)","library(cowplot)","library(ggthemes)","library(readxl)","library(scales)","library(skimr)","library(car)","library(ggfortify)","library(lubridate)","library(data.table)","","# import ----"),fileConn.import)
   close(fileConn.import)
 
   file.create("code\\_libs.R")
   fileConn.libs <- file("code\\_libs.R")
-  writeLines(c("library(tidyverse)","library(CRtools)","library(cowplot)","library(ggthemes)","library(readxl)","library(scales)","library(skimr)","library(car)","library(ggfortify)","library(lubridate),library(data.table)"),fileConn.libs)
+  writeLines(c("library(tidyverse)","library(CRtools)","library(cowplot)","library(ggthemes)","library(readxl)","library(scales)","library(skimr)","library(car)","library(ggfortify)","library(lubridate)","library(data.table)"),fileConn.libs)
   close(fileConn.libs)
 
   file.create("code\\_documentation.R")
