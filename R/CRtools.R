@@ -48,25 +48,44 @@ CRprojectBuilder <- function(){
   dir.create("output")
   dir.create("docs")
 
-  file.create("code\\_import.R")
-  fileConn.import <- file("code\\_import.R")
-  writeLines(c("library(tidyverse)","library(CRtools)","library(cowplot)","library(ggthemes)","library(readxl)","library(scales)","library(skimr)","library(car)","library(ggfortify)","library(lubridate)","library(data.table)","","# import ----"),fileConn.import)
-  close(fileConn.import)
+  if(!file.exists("code\\_import.R")){
+    file.create("code\\_import.R")
+    fileConn.import <- file("code\\_import.R")
+    writeLines(c("library(tidyverse)","library(CRtools)","library(cowplot)","library(ggthemes)","library(readxl)","library(scales)","library(skimr)","library(car)","library(ggfortify)","library(lubridate)","library(data.table)","","# import ----"),fileConn.import)
+    close(fileConn.import)
+  }
 
-  file.create("code\\_libs.R")
-  fileConn.libs <- file("code\\_libs.R")
-  writeLines(c("library(tidyverse)","library(CRtools)","library(cowplot)","library(ggthemes)","library(readxl)","library(scales)","library(skimr)","library(car)","library(ggfortify)","library(lubridate)","library(data.table)"),fileConn.libs)
-  close(fileConn.libs)
+  if(!file.exists("code\\_libs.R")){
+    file.create("code\\_libs.R")
+    fileConn.libs <- file("code\\_libs.R")
+    writeLines(c("library(tidyverse)","library(CRtools)","library(cowplot)","library(ggthemes)","library(readxl)","library(scales)","library(skimr)","library(car)","library(ggfortify)","library(lubridate)","library(data.table)"),fileConn.libs)
+    close(fileConn.libs)
+  }
 
-  file.create("code\\_documentation.R")
-  fileConn.documentation <- file("code\\_documentation.R")
-  writeLines(c("dat.doc <- vector('list')","dat.doc[['Notes']] <- 'Enter Notes Here'"),fileConn.documentation)
-  close(fileConn.documentation)
+  if(!file.exists("code\\_documentation.R")){
+    file.create("code\\_documentation.R")
+    fileConn.documentation <- file("code\\_documentation.R")
+    writeLines(c("dat.doc <- vector('list')","dat.doc[['Notes']] <- 'Enter Notes Here'"),fileConn.documentation)
+    close(fileConn.documentation)
+  }
 
-  file.create("code\\_analysis.R")
-  file.create("code\\_functions.R")
-  file.create("code\\_diagnostics.Rmd")
-  file.create("code\\_old code.R")
+
+  if(!file.exists("code\\_analysis.R")){
+      file.create("code\\_analysis.R")
+  }
+
+  if(!file.exists("code\\_functions.R")){
+      file.create("code\\_functions.R")
+  }
+
+  if(!file.exists("code\\_diagnostics.R")){
+      file.create("code\\_diagnostics.Rmd")
+  }
+
+
+  if(!file.exists("code\\_old code.R")){
+      file.create("code\\_old code.R")
+  }
 
   file.edit("code\\_import.R")
   file.edit("code\\_libs.R")
