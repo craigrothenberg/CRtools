@@ -295,7 +295,7 @@ cut2 <- function (x, cuts, m = 150, g, levels.mean = FALSE, digits, minmax = TRU
 
 
 # new function: overwrite libs
-cr.libUpdate <- function(){
+CRlibUpdate <- function(){
   if(!file.exists("code\\_libsBackup.R")){
     file.create("code\\_libsBackup.R")
   }
