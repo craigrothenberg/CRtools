@@ -292,3 +292,45 @@ cut2 <- function (x, cuts, m = 150, g, levels.mean = FALSE, digits, minmax = TRU
     label(y) <- xlab
   y
 }
+
+
+# new function: overwrite libs
+cr.libUpdate <- function(){
+  if(!file.exists("code\\_libsBackup.R")){
+    file.create("code\\_libsBackup.R")
+  }
+  fileConn.import <- file("code\\_import.R")
+  fileConn.libs <- file("code\\_libs.R")
+  fileConn.libsBackup <- file("code\\_libsBackup.R")
+
+  fileLines.import <- fileConn.import %>% readLines
+  fileLines.libs <- fileConn.libs %>% readLines
+  fileLines.libsBackup <- fileConn.libsBackup %>% readLines
+
+  listOfLibs <- fileLines.import %>%
+    as.data.frame() %>%
+    filter(grepl(x = .data[["."]],pattern = "^library(.*)")) %>%
+    pull(.data[["."]])
+
+
+  contentToWriteToLibsBackup <- c(
+    as.character(fileLines.libsBackup),
+    "",
+    as.character(paste0("# ",Sys.time())),
+    as.character(listOfLibs)
+  )
+
+  writeLines(
+    contentToWriteToLibsBackup,
+    fileConn.libsBackup
+  )
+
+  writeLines(
+    as.character(listOfLibs),
+    fileConn.libs
+  )
+
+  close(fileConn.import)
+  close(fileConn.libs)
+  close(fileConn.libsBackup)
+}
