@@ -69,6 +69,13 @@ CRprojectBuilder <- function(){
     close(fileConn.documentation)
   }
 
+  if(!file.exists("code\\_sessionInfo.R")){
+    file.create("code\\_sessionInfo.R")
+    fileConn.sessionInfo <- file("code\\_sessionInfo.R")
+    writeLines(c("# write date, then paste results of sessionInfo()","# assuming packrat and renv are still not working correctly with shortcuts","sessionInfo()"),fileConn.sessionInfo)
+    close(fileConn.sessionInfo)
+  }
+
 
   if(!file.exists("code\\_analysis.R")){
       file.create("code\\_analysis.R")
