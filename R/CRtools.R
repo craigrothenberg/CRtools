@@ -64,6 +64,7 @@ pct <- function(numbertobeconvertedtocharacter, numberofdecimals = 0){
 }
 
 # capitalizes first letters of strings
+  # 2021-04-06 updated: to use original method, use deprecated = T
 simpleCap <- function(x,deprecated = F) {
   if(deprecated %in% T){
     s <- strsplit(x, " ")[[1]]
