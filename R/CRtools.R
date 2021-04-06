@@ -11,20 +11,47 @@ round2 <- function( vec , digits=0 ){
   return(vec.round)
 }
 # 2020-04-06 rounds p values below 0.0001 to '<0.0001'; converts to character
-pRound <- function( vec , digits=4 ){
-  if(is.na(vec)){
-    return(NA)
-  } else{
-    vec0 <- vec
-    eps <- 10^(-10)
-    vec <- abs(vec)
-    vec <- vec*10^digits
-    vec2 <- vec-floor(vec)
-    #    vec <- floor( vec ) + ifelse( vec2 < .5 , 0 , 1 )
-    vec <- floor( vec ) + ifelse( ( vec2 - .5 ) < - eps, 0 , 1 )
-    vec.round <- sign(vec0) * vec / 10^digits
-    if(vec.round<0.0001){return('<0.0001')} else{return(as.character(vec.round))}
+  # 2021-04-06 updated: to use original method, use deprecated = T
+pRound <- function( vec , digits=4 ,deprecated = F){
+
+  if(deprecated %in% T){
+    if(is.na(vec)){
+      return(NA)
+    } else{
+      vec0 <- vec
+      eps <- 10^(-10)
+      vec <- abs(vec)
+      vec <- vec*10^digits
+      vec2 <- vec-floor(vec)
+      #    vec <- floor( vec ) + ifelse( vec2 < .5 , 0 , 1 )
+      vec <- floor( vec ) + ifelse( ( vec2 - .5 ) < - eps, 0 , 1 )
+      vec.round <- sign(vec0) * vec / 10^digits
+      if(vec.round<0.0001){return('<0.0001')} else{return(as.character(vec.round))}
+    }
+  } else if(deprecated %in% F){
+    pRoundFxn <- function(vec,digits=4){
+      if (is.na(vec)) {
+        return(NA)
+      }
+      else {
+        vec0 <- vec
+        eps <- 10^(-10)
+        vec <- abs(vec)
+        vec <- vec * 10^digits
+        vec2 <- vec - floor(vec)
+        vec <- floor(vec) + ifelse((vec2 - 0.5) < -eps, 0, 1)
+        vec.round <- sign(vec0) * vec/10^digits
+        if (vec.round < 1e-04) {
+          return("<0.0001")
+        }
+        else {
+          return(as.character(vec.round))
+        }
+      }
+    }
+    lapply(vec,pRoundFxn)
   }
+
 }
 
 # convert number to percent as character variable
@@ -37,10 +64,20 @@ pct <- function(numbertobeconvertedtocharacter, numberofdecimals = 0){
 }
 
 # capitalizes first letters of strings
-simpleCap <- function(x) {
-  s <- strsplit(x, " ")[[1]]
-  paste(toupper(substring(s, 1,1)), substring(s, 2),
-        sep="", collapse=" ")
+simpleCap <- function(x,deprecated = F) {
+  if(deprecated %in% T){
+    s <- strsplit(x, " ")[[1]]
+    paste(toupper(substring(s, 1,1)), substring(s, 2),
+          sep="", collapse=" ")
+  } else if (deprecated %in% F){
+    simpleCapFxn <- function (x) {
+      s <- strsplit(x, " ")[[1]]
+      paste(toupper(substring(s, 1, 1)), substring(s, 2), sep = "",
+            collapse = " ")
+    }
+
+    lapply(x,simpleCapFxn)
+  }
 }
 
 # creates subfolder directories and basic files for project
@@ -345,3 +382,33 @@ CRlibUpdate <- function(){
   close(fileConn.libs)
   close(fileConn.libsBackup)
 }
+
+
+# backups of original CRtools methods
+# round2 <- function( vec , digits=0 ){
+#   vec0 <- vec
+#   eps <- 10^(-10)
+#   vec <- abs(vec)
+#   vec <- vec*10^digits
+#   vec2 <- vec-floor(vec)
+#   #    vec <- floor( vec ) + ifelse( vec2 < .5 , 0 , 1 )
+#   vec <- floor( vec ) + ifelse( ( vec2 - .5 ) < - eps, 0 , 1 )
+#   vec.round <- sign(vec0) * vec / 10^digits
+#   return(vec.round)
+# }
+# # 2020-04-06 rounds p values below 0.0001 to '<0.0001'; converts to character
+# pRound <- function( vec , digits=4 ){
+#   if(is.na(vec)){
+#     return(NA)
+#   } else{
+#     vec0 <- vec
+#     eps <- 10^(-10)
+#     vec <- abs(vec)
+#     vec <- vec*10^digits
+#     vec2 <- vec-floor(vec)
+#     #    vec <- floor( vec ) + ifelse( vec2 < .5 , 0 , 1 )
+#     vec <- floor( vec ) + ifelse( ( vec2 - .5 ) < - eps, 0 , 1 )
+#     vec.round <- sign(vec0) * vec / 10^digits
+#     if(vec.round<0.0001){return('<0.0001')} else{return(as.character(vec.round))}
+#   }
+# }
