@@ -49,7 +49,7 @@ pRound <- function( vec , digits=4 ,deprecated = F){
         }
       }
     }
-    lapply(vec,pRoundFxn)
+    sapply(vec,pRoundFxn)
   }
 
 }
@@ -77,7 +77,7 @@ simpleCap <- function(x,deprecated = F) {
             collapse = " ")
     }
 
-    lapply(x,simpleCapFxn)
+    sapply(x,simpleCapFxn)
   }
 }
 
