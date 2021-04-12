@@ -128,7 +128,7 @@ CRprojectBuilder <- function(){
   }
 
   if(!file.exists("code\\_diagnostics.R")){
-      file.create("code\\_diagnostics.Rmd")
+      file.create("code\\_diagnostics.R")
   }
 
 
