@@ -93,7 +93,24 @@ CRprojectBuilder <- function(){
   if(!file.exists("code\\_import.R")){
     file.create("code\\_import.R")
     fileConn.import <- file("code\\_import.R")
-    writeLines(c("library(tidyverse)","library(CRtools)","library(cowplot)","library(ggthemes)","library(readxl)","library(scales)","library(skimr)","library(car)","library(ggfortify)","library(lubridate)","library(data.table)","","# import ----"),fileConn.import)
+    writeLines(c("library(tidyverse)","library(CRtools)","library(cowplot)","library(ggthemes)","library(readxl)","library(scales)","library(skimr)","library(car)","library(ggfortify)","library(lubridate)","library(data.table)","",
+                 "# import ----",
+                 "",
+                 "",
+                 "",
+                 "",
+                 "# data cleaning ----",
+                 "",
+                 "",
+                 "",
+                 "",
+                 "# data filtering ----",
+                 "",
+                 "",
+                 "",
+                 "",
+                 "# final datasets"
+                 ),fileConn.import)
     close(fileConn.import)
   }
 
