@@ -430,3 +430,9 @@ CRlibUpdate <- function(){
 #     if(vec.round<0.0001){return('<0.0001')} else{return(as.character(vec.round))}
 #   }
 # }
+
+
+# 2021-04-21 glimpse for data.table
+glimpse. <- function(data_table){
+  dplyr::glimpse(tibble::as_tibble(data_table))
+}
