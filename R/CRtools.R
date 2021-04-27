@@ -153,6 +153,10 @@ CRprojectBuilder <- function(){
       file.create("code\\_old code.R")
   }
 
+  if(!file.exists("code\\_figures.R")){
+    file.create("code\\_figures.R")
+  }
+
   file.edit("code\\_import.R")
   file.edit("code\\_libs.R")
 }
