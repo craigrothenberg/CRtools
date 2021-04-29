@@ -440,3 +440,6 @@ CRlibUpdate <- function(){
 glimpse. <- function(data_table){
   dplyr::glimpse(tibble::as_tibble(data_table))
 }
+
+
+# to back up details on loaded packages and versions, use sessionInfo()
