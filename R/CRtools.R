@@ -442,4 +442,17 @@ glimpse. <- function(data_table){
 }
 
 
+# backing up projects
+  # 2021-05-03 this is to temporarily bypass issue where external libraries can't be added to .renviron for renv
+CRrenv <- function(){
+  install.packages("devtools")
+  library(devtools)
+  install_github("WinVector/addinexamplesWV",force=T)
+  install_github("rstudio/addinexamples",force=T) # necessary to get the %in% shortcut added
+
+  options("addinexamplesWV.usrFn1" = function() { rstudioapi::insertText(" %xTempVar% ") })
+  options("addinexamplesWV.usrFn2" = function() { rstudioapi::insertText("libs()") })
+  options("addinexamplesWV.usrFn3" = function() { rstudioapi::insertText("shell.exec(getwd())") })
+
+}
 # to back up details on loaded packages and versions, use sessionInfo()
