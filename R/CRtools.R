@@ -455,4 +455,73 @@ CRrenv <- function(){
   options("addinexamplesWV.usrFn3" = function() { rstudioapi::insertText("shell.exec(getwd())") })
 
 }
-# to back up details on loaded packages and versions, use sessionInfo()
+# to back up details on loaded packages and versions if not using renv, use sessionInfo()
+
+
+# 2021-05-04 experimental package to check missing values on variables in a data frame
+# use to identify significant associations, the check individual variables with geom_miss_point()
+
+CRnullHack <- function(mydata){
+  for (i in 1:ncol(mydata)){
+
+    outcome <- is.na(mydata[,i]) %>% as.numeric
+
+    if(sum(outcome)>0){
+      print(paste0("Variable with missing values: ",names(mydata)[i]))
+
+      otherVariables <- mydata %>% select(-i)
+
+      for(j in 1:ncol(otherVariables)){
+        modelResult.raw <-
+          glm(
+            data = otherVariables,
+            formula =
+              outcome ~
+              otherVariables[,j],
+            family = binomial
+          )
+
+        # when using few categories/ numbers, checking chi square test results as OR might miss if indep var is missing in a category of dep var
+        # if so, this will generate a table to show what the issue is
+        if(length(unique(otherVariables[,j])) < 5 & length(unique(otherVariables[,j])) > 1){
+          chiSquare.Setup <-
+            data.frame(
+              otherVariables[,j],
+              outcome
+            ) %>%
+            table(useNA = 'ifany')
+          chiSquare.pValue <- prop.test(chiSquare.Setup %>% as.matrix()) %>% .$p.value
+          if(chiSquare.pValue<0.01){
+            print(paste0(names(mydata %>% select(i))," X ",names(otherVariables)[j]," - Chi square p-value: ",pRound(chiSquare.pValue)))
+            print(chiSquare.Setup)
+          }
+        }
+
+        modelResult <-
+        suppressMessages(
+          CRmodelSummary.logistic(
+            modelResult.raw
+            )
+          )
+        if(#is.na(as.numeric(modelResult$`p value`[2])) |
+           as.numeric(modelResult$`p value`[2])<0.05){
+          # modelResult$variableName[2] <- names(otherVariables[j])
+          print(modelResult)
+        }
+
+    }
+
+  }
+  }
+}
+
+# example of checking data with missing values: the following data replaces some of the vs variable with missings significantly assoc w/ the am variable
+# mtcars2 <- mtcars
+# mtcars2$vs <-
+# c(0,0,1,NA,NA,NA,0,NA,NA,1,NA,0,0,0,NA,NA,NA,1,1,1,1,0,NA,NA,NA,1,0,1,0,0,0,1)
+# CRnullHack(mtcars2)
+# doublechecking potential problem variables
+# library(naniar)
+# mtcars2 %>%
+#   ggplot(aes(x = vs,y = wt))+
+#   geom_miss_point()
