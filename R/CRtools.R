@@ -462,6 +462,7 @@ CRrenv <- function(){
 # use to identify significant associations, the check individual variables with geom_miss_point()
 
 CRnullHack <- function(mydata){
+  print("Note: you may need to restart your project and run install.packages(\"rlang\") for this to work")
   for (i in 1:ncol(mydata)){
 
     outcome <- is.na(mydata[,i]) %>% as.numeric
