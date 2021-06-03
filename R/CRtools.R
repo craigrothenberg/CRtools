@@ -128,11 +128,25 @@ CRprojectBuilder <- function(){
     close(fileConn.documentation)
   }
 
-  if(!file.exists("code\\_sessionInfo.R")){
-    file.create("code\\_sessionInfo.R")
-    fileConn.sessionInfo <- file("code\\_sessionInfo.R")
-    writeLines(c("# write date, then paste results of sessionInfo()","# assuming packrat and renv are still not working correctly with shortcuts","sessionInfo()"),fileConn.sessionInfo)
-    close(fileConn.sessionInfo)
+  # removing this file since library(renv) can replace it
+  # if(!file.exists("code\\_sessionInfo.R")){
+  #   file.create("code\\_sessionInfo.R")
+  #   fileConn.sessionInfo <- file("code\\_sessionInfo.R")
+  #   writeLines(c("# write date, then paste results of sessionInfo()","# assuming packrat and renv are still not working correctly with shortcuts","sessionInfo()"),fileConn.sessionInfo)
+  #   close(fileConn.sessionInfo)
+  # }
+
+  if(!file.exists("code\\_Analysis Markdown.rmd")){
+    file.create("code\\_Analysis Markdown.rmd")
+    fileConn.analysisMarkdown <- file("code\\_Analysis Markdown.rmd")
+    writeLines(c(
+      "---",
+      "  title: \"Analysis\"",
+      "  output: html_document",
+      "  knit: (function(inputFile, encoding) { rmarkdown::render(inputFile, encoding = encoding, output_file = file.path(dirname(gsub(x = inputFile,pattern = \"/code\",replacement = \"\")), paste0(\"output/Analysis_\",format(Sys.time(), \"%d-%m-%Y-%H-%M-%S\"),\".html\"))) })",
+      "---"
+    ),fileConn.analysisMarkdown)
+    close(fileConn.analysisMarkdown)
   }
 
 
