@@ -540,3 +540,11 @@ CRnullHack <- function(mydata){
 # mtcars2 %>%
 #   ggplot(aes(x = vs,y = wt))+
 #   geom_miss_point()
+
+
+# not in a function for now, but code can be copied -
+CRdesplit <- function(){print(
+  "reduce(full_join, by = names(.[[1]]))"
+)}
+  # reverse the use of split to combine data frames after using split() and map() functions
+# reduce(full_join, by = names(.[[1]]))
